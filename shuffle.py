@@ -19,20 +19,20 @@ card_set: dict = {
 
 suits = [ "Hearts", "Clubs", "Diamonds", "Spades"]
 setsInDeck: int = 4
-shuffle = []
+deck = []
 
 def shuffle_init(dec_amount: int):
-    shuffle.clear()
+    deck.clear()
     for _ in range(dec_amount):
         for card_name in card_set:
             for suit in suits:
-                shuffle.append(card.Card(card_name, suit, card_set[card_name]))
+                deck.append(card.Card(card_name, suit, card_set[card_name]))
 
 def stir(dec_amount: int):
     result = [] 
     shuffle_init(dec_amount)
-    while len(shuffle) > 0:
-        result.append(shuffle.pop(random.randint(0, len(shuffle) - 1)))
+    while len(deck) > 0:
+        result.append(deck.pop(random.randint(0, len(deck) - 1)))
     
     return result
 
