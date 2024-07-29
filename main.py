@@ -2,7 +2,7 @@ import art
 import shuffle
 import hand
 import card
-
+from replit import clear 
 
 
 decks = shuffle.stir(1)
