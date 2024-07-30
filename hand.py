@@ -25,7 +25,7 @@ def show_cards(user_hand: list, is_dealer: bool = False):
         print("Your cards:")
 
     for item in user_hand:
-        print(f"{item.Name} of {item.Suit}")
+        print(f"[{item.Nick}] of {item.Suit}")
 
 def show_hand(hand: list, is_dealer: bool = False):
     show_cards(hand, is_dealer)
@@ -41,7 +41,7 @@ def make_user_hand(decks: list, card1: card.Card, card2: card.Card):
     needMore: bool = True
     value: int = get_value(user_hand)
 
-    print("========================================")
+    print("----------------------------------------")
     show_hand(user_hand)
 
     while needMore and value < 21:
@@ -61,7 +61,7 @@ def make_dealer_hand(decks: list, first_card: card.Card):
     dealer_hand.append(decks.pop(0))
     
     value: int = get_value(dealer_hand)
-    print("========================================")
+    print("----------------------------------------")
     show_hand(dealer_hand, True)
     while value < 17:
         time.sleep(1.5)
