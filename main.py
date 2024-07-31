@@ -4,17 +4,13 @@ import hand
 from card import Card
 from replit import clear 
 
-
 decks = shuffle.stir(1)
+continue_game: str = "y"
+games_passed: int = 0
+score = {"dealer": 0, "player": 0}
 
 print(art.logo)
 print("Welcome to the table! Black Jack 21. Dealer must hit on 16 and stop on 17.")
-
-print(len(decks))
-
-continue_game: str = "y"
-games_passed: int = 0
-score = { "dealer": 0, "player": 0}
 
 while continue_game == "y" or continue_game == "yes":
     if games_passed > 0:
@@ -28,7 +24,6 @@ while continue_game == "y" or continue_game == "yes":
     dealer_card1: Card = decks.pop(0)
     user_card2 = decks.pop(0)
 
-    
     print(f"Dealer has [{dealer_card1.Nick}] of {dealer_card1.Suit}")
     print("----------------------------------------")
 

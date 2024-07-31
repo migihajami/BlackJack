@@ -1,11 +1,12 @@
 import card
 import time
 
+
 def get_value(cards: list):
     result: int = 0
     item: card.Card
 
-    #TODO need to rewrite aces calculation
+    # TODO need to rewrite aces calculation
     for item in cards:
         if item.Name == 'Ace':
             if result > 10:
@@ -15,6 +16,7 @@ def get_value(cards: list):
         else:
             result += item.Value
     return result
+
 
 def show_cards(user_hand: list, is_dealer: bool = False):
     item: card.Card
@@ -27,12 +29,14 @@ def show_cards(user_hand: list, is_dealer: bool = False):
     for item in user_hand:
         print(f"[{item.Nick}] of {item.Suit}")
 
+
 def show_hand(hand: list, is_dealer: bool = False):
     show_cards(hand, is_dealer)
     if is_dealer:
         print(f"Dealer has {get_value(hand)}")
     else:
         print(f"Your hand has value of '{get_value(hand)}")
+
 
 def make_user_hand(decks: list, card1: card.Card, card2: card.Card):
     user_hand = []
@@ -55,11 +59,12 @@ def make_user_hand(decks: list, card1: card.Card, card2: card.Card):
 
     return value
 
+
 def make_dealer_hand(decks: list, first_card: card.Card):
     dealer_hand = []
     dealer_hand.append(first_card)
     dealer_hand.append(decks.pop(0))
-    
+
     value: int = get_value(dealer_hand)
     print("----------------------------------------")
     show_hand(dealer_hand, True)
@@ -69,7 +74,5 @@ def make_dealer_hand(decks: list, first_card: card.Card):
         value = get_value(dealer_hand)
         show_hand(dealer_hand, True)
         print("------")
-    
-    return value
-        
 
+    return value
