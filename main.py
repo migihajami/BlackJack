@@ -2,7 +2,8 @@ import art
 import shuffle
 import hand
 from card import Card
-from replit import clear 
+from replit import clear
+from stattistics import  Statistics
 
 decks = shuffle.stir(1)
 continue_game: str = "y"
@@ -12,12 +13,15 @@ score = {"dealer": 0, "player": 0}
 print(art.logo)
 print("Welcome to the table! Black Jack 21. Dealer must hit on 16 and stop on 17.")
 
+statistics = Statistics()
+print(statistics)
+
 while continue_game == "y" or continue_game == "yes":
     if games_passed > 0:
         clear()
         print(f"There are {len(decks)} cards left in the deck")
         print(f"Game No: {games_passed + 1}")
-        print(f"{score['player']} wins, {score['dealer']} looses, {games_passed - score['player'] - score['dealer']} pushes.")
+        print(statistics)
         print("========================================")
 
     user_card1 = decks.pop(0)
@@ -35,12 +39,13 @@ while continue_game == "y" or continue_game == "yes":
         dealer_value = hand.make_dealer_hand(decks, dealer_card1)
         if dealer_value < user_value or dealer_value > 21:
             print("You win!")
-            score["player"] += 1
+            statistics.win()
         elif dealer_value == user_value:
             print("Push.")
+            statistics.push()
         else:
             print("You loose.")
-            score["dealer"] += 1
+            statistics.loose()
 
     continue_game = input("One more game? ")
     if len(decks) < 5:
