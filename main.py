@@ -1,11 +1,13 @@
 import art
-import shuffle
+from shuffle import Shuffle
 import hand
 from card import Card
 from replit import clear
 from stattistics import  Statistics
 
-decks = shuffle.stir(1)
+shuffle = Shuffle(1)
+decks = shuffle.stir()
+
 continue_game: str = "y"
 games_passed: int = 0
 score = {"dealer": 0, "player": 0}
@@ -49,5 +51,5 @@ while continue_game == "y" or continue_game == "yes":
 
     continue_game = input("One more game? ")
     if len(decks) < 5:
-        decks = shuffle.stir(1)
+        decks = shuffle.stir()
     

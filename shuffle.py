@@ -1,7 +1,7 @@
 import random
 import card
 
-card_set: dict = {
+CARD_SET: dict = {
     'Two': {"Nick": "2", "Value": 2},
     'Three': {"Nick": "3", "Value": 3},
     'Four': {"Nick": "4", "Value": 4},
@@ -17,23 +17,28 @@ card_set: dict = {
     'Ace': {"Nick": "A", "Value": 11}
 }
 
-suits = ["Hearts", "Clubs", "Diamonds", "Spades"]
-setsInDeck: int = 4
-deck = []
+SUITS = ["Hearts", "Clubs", "Diamonds", "Spades"]
 
 
-def shuffle_init(dec_amount: int):
-    deck.clear()
-    for _ in range(dec_amount):
-        for card_name in card_set:
-            for suit in suits:
-                deck.append(card.Card(card_name, suit, card_set[card_name]["Value"], card_set[card_name]["Nick"]))
+class Shuffle:
+    deck: list
+    dec_amount: int
 
+    def __init__(self, dec_amount: int):
+        self.deck = []
+        self.dec_amount = dec_amount
 
-def stir(dec_amount: int):
-    result = []
-    shuffle_init(dec_amount)
-    while len(deck) > 0:
-        result.append(deck.pop(random.randint(0, len(deck) - 1)))
+    def shuffle_init(self):
+        self.deck.clear()
+        for _ in range(self.dec_amount):
+            for card_name in CARD_SET:
+                for suit in SUITS:
+                    self.deck.append(card.Card(card_name, suit, CARD_SET[card_name]["Value"], CARD_SET[card_name]["Nick"]))
 
-    return result
+    def stir(self):
+        result = []
+        self.shuffle_init()
+        while len(self.deck) > 0:
+            result.append(self.deck.pop(random.randint(0, len(self.deck) - 1)))
+
+        return result
