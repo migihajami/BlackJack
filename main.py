@@ -7,7 +7,6 @@ from stattistics import  Statistics
 
 shuffle = Shuffle(1)
 decks = shuffle.stir()
-hand = Hand()
 
 continue_game: str = "y"
 games_passed: int = 0
@@ -30,16 +29,20 @@ while continue_game == "y" or continue_game == "yes":
     user_card1 = decks.pop(0)
     dealer_card1: Card = decks.pop(0)
     user_card2 = decks.pop(0)
+    dealer_card2: Card = decks.pop(0)
+
+    user_hand = Hand(decks, user_card1, user_card2, False)
+    dealer_hand = Hand(decks, dealer_card1, dealer_card2, True)
 
     print(f"Dealer has [{dealer_card1.Nick}] of {dealer_card1.Suit}")
     print("----------------------------------------")
 
-    user_value = hand.make_user_hand(decks, user_card1, user_card2)
+    user_value = user_hand.make_hand()
     games_passed += 1
     if user_value > 21:
         print("Bust!")
     else:
-        dealer_value = hand.make_dealer_hand(decks, dealer_card1)
+        dealer_value = dealer_hand.make_dealer_hand()
         if dealer_value < user_value or dealer_value > 21:
             print("You win!")
             statistics.win()
