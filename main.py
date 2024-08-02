@@ -1,6 +1,6 @@
 import art
 from shuffle import Shuffle
-from hand import Hand
+from hand import Hand, DealerHand
 from card import Card
 from replit import clear
 from stattistics import  Statistics
@@ -31,8 +31,8 @@ while continue_game == "y" or continue_game == "yes":
     user_card2 = decks.pop(0)
     dealer_card2: Card = decks.pop(0)
 
-    user_hand = Hand(decks, user_card1, user_card2, False)
-    dealer_hand = Hand(decks, dealer_card1, dealer_card2, True)
+    user_hand = Hand(decks, user_card1, user_card2, )
+    dealer_hand = DealerHand(decks, dealer_card1, dealer_card2)
 
     print(f"Dealer has [{dealer_card1.Nick}] of {dealer_card1.Suit}")
     print("----------------------------------------")
@@ -42,7 +42,7 @@ while continue_game == "y" or continue_game == "yes":
     if user_value > 21:
         print("Bust!")
     else:
-        dealer_value = dealer_hand.make_dealer_hand()
+        dealer_value = dealer_hand.make_hand()
         if dealer_value < user_value or dealer_value > 21:
             print("You win!")
             statistics.win()
