@@ -2,77 +2,82 @@ import card
 import time
 
 
-def get_value(cards: list):
-    result: int = 0
-    item: card.Card
+class Dealer:
 
-    # TODO need to rewrite aces calculation
-    for item in cards:
-        if item.Name == 'Ace':
-            if result > 10:
-                result += 1
+    def __init__(self):
+        pass
+
+
+class Hand:
+
+    def __init__(self):
+        pass
+
+    def get_value(self, cards: list):
+        result: int = 0
+        item: card.Card
+
+        # TODO need to rewrite aces calculation
+        for item in cards:
+            if item.Name == 'Ace':
+                if result > 10:
+                    result += 1
+                else:
+                    result += 11
             else:
-                result += 11
+                result += item.Value
+        return result
+
+    def show_cards(self, user_hand: list, is_dealer: bool = False):
+        item: card.Card
+
+        if is_dealer:
+            print("Dealer has: ")
         else:
-            result += item.Value
-    return result
+            print("Your cards:")
 
+        for item in user_hand:
+            print(f"[{item.Nick}] of {item.Suit}")
 
-def show_cards(user_hand: list, is_dealer: bool = False):
-    item: card.Card
+    def show_hand(self, hand: list, is_dealer: bool = False):
+        self.show_cards(hand, is_dealer)
+        if is_dealer:
+            print(f"Dealer has {self.get_value(hand)}")
+        else:
+            print(f"Your hand has value of '{self.get_value(hand)}")
 
-    if is_dealer:
-        print("Dealer has: ")
-    else:
-        print("Your cards:")
+    def make_user_hand(self, decks: list, card1: card.Card, card2: card.Card):
+        user_hand = []
+        user_hand.append(card1)
+        user_hand.append(card2)
+        need_more: bool = True
+        value: int = self.get_value(user_hand)
 
-    for item in user_hand:
-        print(f"[{item.Nick}] of {item.Suit}")
+        print("----------------------------------------")
+        self.show_hand(user_hand)
 
+        while need_more and value < 21:
+            need_more_str = input("Need more?")
+            need_more = need_more_str.lower() == "y" or need_more_str.lower() == "yes"
+            if need_more:
+                user_hand.append(decks.pop(0))
+                value = self.get_value(user_hand)
+                print("------")
+                self.show_hand(user_hand)
 
-def show_hand(hand: list, is_dealer: bool = False):
-    show_cards(hand, is_dealer)
-    if is_dealer:
-        print(f"Dealer has {get_value(hand)}")
-    else:
-        print(f"Your hand has value of '{get_value(hand)}")
+        return value
 
+    def make_dealer_hand(self, decks: list, first_card: card.Card):
+        dealer_hand = [first_card, decks.pop(0)]
 
-def make_user_hand(decks: list, card1: card.Card, card2: card.Card):
-    user_hand = []
-    user_hand.append(card1)
-    user_hand.append(card2)
-    needMore: bool = True
-    value: int = get_value(user_hand)
-
-    print("----------------------------------------")
-    show_hand(user_hand)
-
-    while needMore and value < 21:
-        need_more_str = input("Need more?")
-        needMore = need_more_str.lower() == "y" or need_more_str.lower() == "yes"
-        if needMore:
-            user_hand.append(decks.pop(0))
-            value = get_value(user_hand)
+        value: int = self.get_value(dealer_hand)
+        print("----------------------------------------")
+        self.show_hand(dealer_hand, True)
+        while value < 17:
+            time.sleep(1.5)
+            dealer_hand.append(decks.pop(0))
+            value = self.get_value(dealer_hand)
+            self.show_hand(dealer_hand, True)
             print("------")
-            show_hand(user_hand)
 
-    return value
-
-
-def make_dealer_hand(decks: list, first_card: card.Card):
-    dealer_hand = []
-    dealer_hand.append(first_card)
-    dealer_hand.append(decks.pop(0))
-
-    value: int = get_value(dealer_hand)
-    print("----------------------------------------")
-    show_hand(dealer_hand, True)
-    while value < 17:
-        time.sleep(1.5)
-        dealer_hand.append(decks.pop(0))
-        value = get_value(dealer_hand)
-        show_hand(dealer_hand, True)
-        print("------")
-
-    return value
+        return value

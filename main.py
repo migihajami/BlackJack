@@ -1,12 +1,13 @@
 import art
 from shuffle import Shuffle
-import hand
+from hand import Hand
 from card import Card
 from replit import clear
 from stattistics import  Statistics
 
 shuffle = Shuffle(1)
 decks = shuffle.stir()
+hand = Hand()
 
 continue_game: str = "y"
 games_passed: int = 0
