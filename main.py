@@ -1,11 +1,12 @@
 import art
 from shuffle import Shuffle
-from hand import Hand, DealerHand
+from hand import Hand
+from dealer_hand import DealerHand
 from card import Card
 from replit import clear
 from stattistics import  Statistics
 
-shuffle = Shuffle(1)
+shuffle = Shuffle(2)
 decks = shuffle.stir()
 
 continue_game: str = "y"

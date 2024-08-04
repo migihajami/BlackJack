@@ -1,12 +1,10 @@
 from card import Card
-import time
 
 
 class Hand:
     def __init__(self, deck: list, card1: Card, card2: Card):
         self.cards = [card1, card2]
         self.deck = deck
-        self.is_dealer = False
 
     def get_value(self):
         result: int = 0
@@ -25,21 +23,16 @@ class Hand:
 
     def show_cards(self):
         item: Card
-
-        if self.is_dealer:
-            print("Dealer has: ")
-        else:
-            print("Your cards:")
-
+        result: list = []
         for item in self.cards:
-            print(f"[{item.Nick}] of {item.Suit}")
+            result.append(f"[{item.Nick}] of {item.Suit}")
+
+        return str.join("\n", result)
 
     def show_hand(self):
-        self.show_cards()
-        if self.is_dealer:
-            print(f"Dealer has {self.get_value()}")
-        else:
-            print(f"Your hand has value of '{self.get_value()}")
+        cards = self.show_cards()
+        print(f"Your cards: {cards}")
+        print(f"Your hand has value of '{self.get_value()}")
 
     def make_hand(self):
         need_more: bool = True
@@ -59,23 +52,4 @@ class Hand:
 
         return value
 
-
-class DealerHand(Hand):
-
-    def __init__(self, deck: list, card1: Card, card2: Card):
-        super().__init__(deck, card1, card2)
-        self.is_dealer = True
-
-    def make_hand(self):
-        value: int = self.get_value()
-        print("----------------------------------------")
-        self.show_hand()
-        while value < 17:
-            time.sleep(1.5)
-            self.cards.append(self.deck.pop(0))
-            value = self.get_value()
-            self.show_hand()
-            print("------")
-
-        return value
 
