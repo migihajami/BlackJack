@@ -9,16 +9,21 @@ class Hand:
     def get_value(self):
         result: int = 0
         item: Card
+        is_soft: bool = False
 
-        # TODO need to rewrite aces calculation
         for item in self.cards:
             if item.Name == 'Ace':
                 if result > 10:
                     result += 1
                 else:
                     result += 11
+                    is_soft = True
             else:
                 result += item.Value
+                if result > 21 and is_soft:
+                    result -= 10
+                    is_soft = False
+
         return result
 
     def show_cards(self):
