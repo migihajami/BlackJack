@@ -2,12 +2,13 @@ import time
 
 from card import Card
 from hand import Hand
+from shuffle import Shuffle
 
 
 class DealerHand(Hand):
 
-    def __init__(self, deck: list, card1: Card, card2: Card):
-        super().__init__(deck, card1, card2)
+    def __init__(self, shuffle: Shuffle, card1: Card, card2: Card):
+        super().__init__(shuffle, card1, card2)
 
     def make_hand(self):
         value: int = self.get_value()
@@ -15,7 +16,7 @@ class DealerHand(Hand):
         self.show_hand()
         while value < 17:
             time.sleep(1.5)
-            self.cards.append(self.deck.pop(0))
+            self.cards.append(self.shuffle.hit())
             value = self.get_value()
             self.show_hand()
             print("------")

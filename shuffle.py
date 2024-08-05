@@ -18,27 +18,37 @@ CARD_SET: dict = {
 }
 
 SUITS = ["Hearts", "Clubs", "Diamonds", "Spades"]
-
+CARDS_IN_ONE_DECK = 52
 
 class Shuffle:
-    deck: list
+    sorted_deck: list
     dec_amount: int
+    deck: list
 
     def __init__(self, dec_amount: int):
+        self.sorted_deck = []
         self.deck = []
         self.dec_amount = dec_amount
+        self.stir()
 
     def shuffle_init(self):
-        self.deck.clear()
+        self.sorted_deck.clear()
         for _ in range(self.dec_amount):
             for card_name in CARD_SET:
                 for suit in SUITS:
-                    self.deck.append(card.Card(card_name, suit, CARD_SET[card_name]["Value"], CARD_SET[card_name]["Nick"]))
+                    self.sorted_deck.append(card.Card(card_name, suit, CARD_SET[card_name]["Value"], CARD_SET[card_name]["Nick"]))
 
     def stir(self):
-        result = []
+        self.deck.clear()
         self.shuffle_init()
-        while len(self.deck) > 0:
-            result.append(self.deck.pop(random.randint(0, len(self.deck) - 1)))
+        while len(self.sorted_deck) > 0:
+            self.deck.append(self.sorted_deck.pop(random.randint(0, len(self.sorted_deck) - 1)))
 
-        return result
+    def hit(self):
+        if len(self.deck) < 10:
+            self.stir()
+
+        return self.deck.pop(0)
+
+    def __len__(self):
+        return len(self.deck)

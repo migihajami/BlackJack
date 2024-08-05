@@ -7,7 +7,6 @@ from replit import clear
 from stattistics import  Statistics
 
 shuffle = Shuffle(2)
-decks = shuffle.stir()
 
 continue_game: str = "y"
 games_passed: int = 0
@@ -24,18 +23,18 @@ print(statistics)
 while continue_game == "y" or continue_game == "yes":
     if games_passed > 0:
         clear()
-        print(f"There are {len(decks)} cards left in the deck")
+        print(f"There are {len(shuffle)} cards left in the deck")
         print(f"Game No: {games_passed + 1}")
         print(statistics)
         print("========================================")
 
-    user_card1 = decks.pop(0)
-    dealer_card1: Card = decks.pop(0)
-    user_card2 = decks.pop(0)
-    dealer_card2: Card = decks.pop(0)
+    user_card1 = shuffle.hit()
+    dealer_card1: Card = shuffle.hit()
+    user_card2 = shuffle.hit()
+    dealer_card2: Card = shuffle.hit()
 
-    user_hand = Hand(decks, user_card1, user_card2, )
-    dealer_hand = DealerHand(decks, dealer_card1, dealer_card2)
+    user_hand = Hand(shuffle, user_card1, user_card2, )
+    dealer_hand = DealerHand(shuffle, dealer_card1, dealer_card2)
 
     print(f"Dealer has {dealer_card1}")
     print("----------------------------------------")
@@ -57,6 +56,5 @@ while continue_game == "y" or continue_game == "yes":
             statistics.loose()
 
     continue_game = input("One more game? ")
-    if len(decks) < 5:
-        decks = shuffle.stir()
+
     

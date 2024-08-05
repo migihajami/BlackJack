@@ -1,10 +1,10 @@
 from card import Card
-
+from shuffle import Shuffle
 
 class Hand:
-    def __init__(self, deck: list, card1: Card, card2: Card):
+    def __init__(self, shuffle: Shuffle, card1: Card, card2: Card):
         self.cards = [card1, card2]
-        self.deck = deck
+        self.shuffle = shuffle
 
     def get_value(self):
         result: int = 0
@@ -50,7 +50,7 @@ class Hand:
             need_more_str = input("Need more?")
             need_more = need_more_str.lower() == "y" or need_more_str.lower() == "yes"
             if need_more:
-                self.cards.append(self.deck.pop(0))
+                self.cards.append(self.shuffle.hit())
                 value = self.get_value()
                 print("------")
                 self.show_hand()
