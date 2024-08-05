@@ -34,9 +34,10 @@ class Shuffle:
     def shuffle_init(self):
         self.sorted_deck.clear()
         for _ in range(self.dec_amount):
-            for card_name in CARD_SET:
-                for suit in SUITS:
-                    self.sorted_deck.append(card.Card(card_name, suit, CARD_SET[card_name]["Value"], CARD_SET[card_name]["Nick"]))
+            for suit in SUITS:
+                block = [card.Card(item, suit, value["Value"], value["Nick"]) for (item, value) in CARD_SET.items()]
+                self.sorted_deck.extend(block)
+
 
     def stir(self):
         self.deck.clear()
