@@ -39,12 +39,22 @@ while continue_game == "y" or continue_game == "yes":
     print(f"Dealer has {dealer_card1}")
     print("----------------------------------------")
 
-    user_value = user_hand.make_hand()
+    if dealer_hand.has_blackjack() and not user_hand.has_blackjack():
+        user_value = user_hand.get_value()
+        user_hand.show_hand()
+    else:
+        user_value = user_hand.make_hand()
+
     games_passed += 1
     if user_value > 21:
         print("Bust!")
     else:
-        dealer_value = dealer_hand.make_hand()
+        if not user_hand.has_blackjack():
+            dealer_value = dealer_hand.make_hand()
+        else:
+            dealer_value = dealer_hand.get_value()
+            dealer_hand.show_hand()
+
         if dealer_value < user_value or dealer_value > 21:
             print("You win!")
             statistics.win()

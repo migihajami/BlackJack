@@ -37,7 +37,13 @@ class Hand:
     def show_hand(self):
         cards = self.show_cards()
         print(f"Your cards: {cards}")
-        print(f"Your hand has value of '{self.get_value()}")
+        if self.has_blackjack():
+            print(f"You have BlackJack!")
+        else:
+            print(f"Your hand has value of '{self.get_value()}")
+
+    def has_blackjack(self):
+        return len(self.cards) == 2 and self.get_value() == 21
 
     def make_hand(self):
         need_more: bool = True

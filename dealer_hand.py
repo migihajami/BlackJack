@@ -26,4 +26,7 @@ class DealerHand(Hand):
     def show_hand(self):
         cards = self.show_cards()
         print(f"Dealer has: {cards}")
-        print(f"Dealer has {self.get_value()}")
+        if self.has_blackjack():
+            print(f"Dealer has BlackJack.")
+        else:
+            print(f"Dealer has {self.get_value()}")
