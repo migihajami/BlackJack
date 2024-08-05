@@ -18,7 +18,7 @@ CARD_SET: dict = {
 }
 
 SUITS = ["Hearts", "Clubs", "Diamonds", "Spades"]
-CARDS_IN_ONE_DECK = 52
+
 
 class Shuffle:
     sorted_deck: list
