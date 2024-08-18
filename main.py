@@ -1,4 +1,6 @@
 import art
+from dealer import Dealer
+from player import Player
 from shuffle import Shuffle
 from hand import Hand
 from dealer_hand import DealerHand
@@ -12,13 +14,15 @@ continue_game: str = "y"
 games_passed: int = 0
 score = {"dealer": 0, "player": 0}
 
-print("Spade - \u2660")
-
 print(art.logo)
 print("Welcome to the table! Black Jack 21. Dealer must hit on 16 and stop on 17.")
 
 statistics = Statistics()
 print(statistics)
+
+name = input("What is your name?")
+player = Player(name, shuffle, 1)
+dealer = Dealer(shuffle, 2)
 
 while continue_game == "y" or continue_game == "yes":
     if games_passed > 0:
@@ -28,32 +32,29 @@ while continue_game == "y" or continue_game == "yes":
         print(statistics)
         print("========================================")
 
-    user_card1 = shuffle.hit()
-    dealer_card1: Card = shuffle.hit()
-    user_card2 = shuffle.hit()
-    dealer_card2: Card = shuffle.hit()
+    player.hit(0)
+    dealer.hit()
+    player.hit(0)
+    dealer.hit()
 
-    user_hand = Hand(shuffle, user_card1, user_card2, )
-    dealer_hand = DealerHand(shuffle, dealer_card1, dealer_card2)
-
-    print(f"Dealer has {dealer_card1}")
+    print(f"Dealer has {dealer.get_first_card()}")
     print("----------------------------------------")
 
-    if dealer_hand.has_blackjack() and not user_hand.has_blackjack():
-        user_value = user_hand.get_value()
-        user_hand.show_hand()
+    if dealer.has_blackjack() and not player.has_blackjack(0):
+        user_value = player.get_value(0)
+        player.show_hand(0)
     else:
-        user_value = user_hand.make_hand()
+        user_value = player.make_hand(0)
 
     games_passed += 1
     if user_value > 21:
         print("Bust!")
     else:
-        if not user_hand.has_blackjack():
-            dealer_value = dealer_hand.make_hand()
+        if not player.has_blackjack(0):
+            dealer_value = dealer.make_hand()
         else:
-            dealer_value = dealer_hand.get_value()
-            dealer_hand.show_hand()
+            dealer_value = dealer.get_value()
+            dealer.show_hand()
 
         if dealer_value < user_value or dealer_value > 21:
             print("You win!")
@@ -65,6 +66,8 @@ while continue_game == "y" or continue_game == "yes":
             print("You loose.")
             statistics.loose()
 
+    dealer.flush()
+    player.flush()
     continue_game = input("One more game? ")
 
     

@@ -26,6 +26,10 @@ class Shuffle:
     deck: list
 
     def __init__(self, dec_amount: int):
+        '''
+        creates a shuffle machine
+        :param dec_amount: number of decks of cards to load into the machine
+        '''
         self.sorted_deck = []
         self.deck = []
         self.dec_amount = dec_amount

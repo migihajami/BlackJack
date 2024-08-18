@@ -1,10 +1,10 @@
 from card import Card
 from shuffle import Shuffle
 
+
 class Hand:
-    def __init__(self, shuffle: Shuffle, card1: Card, card2: Card):
-        self.cards = [card1, card2]
-        self.shuffle = shuffle
+    def __init__(self):
+        self.cards = []
 
     def get_value(self):
         result: int = 0
@@ -34,33 +34,13 @@ class Hand:
 
         return str.join("\n", result)
 
-    def show_hand(self):
-        cards = self.show_cards()
-        print(f"Your cards: {cards}")
-        if self.has_blackjack():
-            print(f"You have BlackJack!")
-        else:
-            print(f"Your hand has value of '{self.get_value()}")
-
     def has_blackjack(self):
         return len(self.cards) == 2 and self.get_value() == 21
 
-    def make_hand(self):
-        need_more: bool = True
-        value: int = self.get_value()
+    def add_card(self, card: Card):
+        self.cards.append(card)
 
-        print("----------------------------------------")
-        self.show_hand()
-
-        while need_more and value < 21:
-            need_more_str = input("Need more?")
-            need_more = need_more_str.lower() == "y" or need_more_str.lower() == "yes"
-            if need_more:
-                self.cards.append(self.shuffle.hit())
-                value = self.get_value()
-                print("------")
-                self.show_hand()
-
-        return value
+    def flush(self):
+        self.cards.clear()
 
 
