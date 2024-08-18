@@ -36,11 +36,11 @@ class Player:
 
     def has_blackjack(self, hand_number: int = 0):
         hand = self.hands[hand_number]
-        return  hand.has_blackjack()
+        return hand.has_blackjack()
 
     def get_value(self, hand_number: int = 0):
         hand = self.hands[hand_number]
-        return  hand.get_value()
+        return hand.get_value()
 
     def make_hand(self, hand_number: int = 0) -> int:
         hand = self.hands[hand_number]

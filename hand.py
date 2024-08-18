@@ -1,5 +1,4 @@
 from card import Card
-from shuffle import Shuffle
 
 
 class Hand:

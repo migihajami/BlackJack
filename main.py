@@ -2,9 +2,6 @@ import art
 from dealer import Dealer
 from player import Player
 from shuffle import Shuffle
-from hand import Hand
-from dealer_hand import DealerHand
-from card import Card
 from replit import clear
 from stattistics import  Statistics
 
