@@ -1,13 +1,15 @@
+from HandDisplayBase import HandDisplay
 from hand import Hand
 from shuffle import Shuffle
 
 
 class Player:
 
-    def __init__(self, name: str, shuffle: Shuffle,  hands_amount: int = 1):
+    def __init__(self, name: str, shuffle: Shuffle, hand_displayer: HandDisplay,  hands_amount: int = 1):
         self.name = name
         self.shuffle = shuffle
         self.hands = []
+        self.hand_displayer = hand_displayer
         for i in range(hands_amount):
             self.hands.append(Hand())
 
@@ -20,15 +22,6 @@ class Player:
     def remove_hand(self, hand_number: int = 0):
         if len(self.hands) > 1:
             self.hands.pop(hand_number)
-
-    def show_hand(self, hand_number: int = 0):
-        hand = self.hands[hand_number]
-        cards = hand.show_cards()
-        print(f"Your cards: {cards}")
-        if hand.has_blackjack():
-            print(f"You have BlackJack!")
-        else:
-            print(f"Your hand has value of '{hand.get_value()}")
 
     def hit(self, hand_number: int = 0):
         hand = self.hands[hand_number]
@@ -48,7 +41,7 @@ class Player:
         value: int = hand.get_value()
 
         print("----------------------------------------")
-        self.show_hand(hand_number)
+        self.hand_displayer.display_hand(self.name, self.hands[hand_number])
 
         while need_more and value < 21:
             need_more_str = input("Need more?")
@@ -57,7 +50,7 @@ class Player:
                 hand.cards.append(self.shuffle.hit())
                 value = hand.get_value()
                 print("------")
-                self.show_hand(hand_number)
+                self.hand_displayer.display_hand(self.name, self.hands[hand_number])
 
         return value
 
