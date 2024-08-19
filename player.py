@@ -42,7 +42,6 @@ class Player:
         need_more: bool = True
         value: int = hand.get_value()
 
-        print("----------------------------------------")
         self.hand_displayer.display_hand(self.name, self.hands[hand_number])
 
         while need_more and value < 21:
@@ -51,7 +50,6 @@ class Player:
             if need_more:
                 hand.cards.append(self.shuffle.hit())
                 value = hand.get_value()
-                print("------")
                 self.hand_displayer.display_hand(self.name, self.hands[hand_number])
 
         return value
