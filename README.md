@@ -1,6 +1,6 @@
-# BlackJack Console Game
+# BlackJack Game
 
-A simple, text-based BlackJack game implemented in Python.
+BlackJack game implemented in Python console and web API versions.
 
 ## How to Play
 
