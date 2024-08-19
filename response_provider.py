@@ -1,15 +1,15 @@
 from abc import ABC, abstractmethod
 
 
-class BaseResponseProvider(ABC):
+class ResponseProvider(ABC):
 
     @abstractmethod
     def get_response(self, question: str) -> str:
         pass
 
 
-class ConsoleResponseProvider(BaseResponseProvider):
-    
+class ConsoleResponseProvider(ResponseProvider):
+
     def get_response(self, question: str) -> str:
         response = input(question)
         return response

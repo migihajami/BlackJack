@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from replit import clear
 
 
-class BaseMessageSender(ABC):
+class MessageSender(ABC):
 
     @abstractmethod
     def send_message(self, message):
@@ -13,7 +13,7 @@ class BaseMessageSender(ABC):
         pass
 
 
-class ConsoleMessageSender(BaseMessageSender):
+class ConsoleMessageSender(MessageSender):
 
     def send_message(self, message):
         print(message)

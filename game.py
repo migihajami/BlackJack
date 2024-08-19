@@ -1,7 +1,5 @@
-from hand_display import HandDisplay
+from communication import Communication
 from dealer import Dealer
-from message_sender import BaseMessageSender
-from response_provider import BaseResponseProvider
 from player import Player
 from shuffle import Shuffle
 from stattistics import Statistics
@@ -10,14 +8,14 @@ from stattistics import Statistics
 class Game:
     stats: Statistics
 
-    def __init__(self, player_name, hand_displayer: HandDisplay, shuffle: Shuffle, response_provider: BaseResponseProvider, message_sender: BaseMessageSender):
+    def __init__(self, player_name, shuffle: Shuffle, communication: Communication):
         self.shuffle = shuffle
         self.rounds_passed = 0
         self.score = {"dealer": 0, "player": 0}
         self.stats = Statistics()
-        self.hand_displayer = hand_displayer
-        self.response_provider = response_provider
-        self.message_sender = message_sender
+        self.hand_displayer = communication.hand_display
+        self.response_provider = communication.response_provider
+        self.message_sender = communication.message_sender
         self.player = Player(player_name, self.shuffle, self.hand_displayer, self.response_provider, 1)
         self.dealer = Dealer(self.shuffle, self.hand_displayer, 2)
         self.continue_game = "y"

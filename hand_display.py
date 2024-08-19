@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from card import Card
 from hand import Hand
-from message_sender import BaseMessageSender
+from message_sender import MessageSender
 
 
 class HandDisplay(ABC):
@@ -21,7 +21,7 @@ class HandDisplay(ABC):
 
 class ConsoleHandDisplay(HandDisplay):
 
-    def __init__(self, message_sender: BaseMessageSender):
+    def __init__(self, message_sender: MessageSender):
         self.message_sender = message_sender
 
     def display_card(self, name: str, card: Card):
