@@ -8,7 +8,7 @@ import time
 class Dealer(Player):
 
     def __init__(self, shuffle: Shuffle, hand_displayer: HandDisplay, time_delay: float = 1.5):
-        super().__init__(name="Dealer", shuffle=shuffle, hand_displayer=hand_displayer, hands_amount=1)
+        super().__init__(name="Dealer", shuffle=shuffle, hand_displayer=hand_displayer, hands_amount=1, response_provider=None)
         self.hands = [DealerHand()]
         self.time_delay = time_delay
 

@@ -1,15 +1,17 @@
 from HandDisplayBase import HandDisplay
 from hand import Hand
+from palyer_response_provider import PlayerResponseProvider
 from shuffle import Shuffle
 
 
 class Player:
 
-    def __init__(self, name: str, shuffle: Shuffle, hand_displayer: HandDisplay,  hands_amount: int = 1):
+    def __init__(self, name: str, shuffle: Shuffle, hand_displayer: HandDisplay,  response_provider: PlayerResponseProvider, hands_amount: int = 1):
         self.name = name
         self.shuffle = shuffle
         self.hands = []
         self.hand_displayer = hand_displayer
+        self.response_provider = response_provider
         for i in range(hands_amount):
             self.hands.append(Hand())
 
@@ -44,7 +46,7 @@ class Player:
         self.hand_displayer.display_hand(self.name, self.hands[hand_number])
 
         while need_more and value < 21:
-            need_more_str = input("Need more?")
+            need_more_str = self.response_provider.get_response("Need more?")
             need_more = need_more_str.lower() == "y" or need_more_str.lower() == "yes"
             if need_more:
                 hand.cards.append(self.shuffle.hit())

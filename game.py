@@ -1,5 +1,6 @@
 from HandDisplayBase import HandDisplay
 from dealer import Dealer
+from palyer_response_provider import PlayerResponseProvider
 from player import Player
 from shuffle import Shuffle
 from stattistics import Statistics
@@ -9,13 +10,14 @@ from replit import clear
 class Game:
     stats: Statistics
 
-    def __init__(self, player_name, hand_displayer: HandDisplay, number_of_decks: int = 2):
-        self.shuffle = Shuffle(number_of_decks)
+    def __init__(self, player_name, hand_displayer: HandDisplay, shuffle: Shuffle, response_provider: PlayerResponseProvider):
+        self.shuffle = shuffle
         self.rounds_passed = 0
         self.score = {"dealer": 0, "player": 0}
         self.stats = Statistics()
         self.hand_displayer = hand_displayer
-        self.player = Player(player_name, self.shuffle, self.hand_displayer, 1)
+        self.response_provider = response_provider
+        self.player = Player(player_name, self.shuffle, self.hand_displayer, self.response_provider,1)
         self.dealer = Dealer(self.shuffle, self.hand_displayer, 2)
         self.continue_game = "y"
 
@@ -67,4 +69,4 @@ class Game:
 
             self.dealer.flush()
             self.player.flush()
-            self.continue_game = input("One more game? ")
+            self.continue_game = self.response_provider.get_response("One more game? ")
