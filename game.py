@@ -5,7 +5,6 @@ from response_provider import BaseResponseProvider
 from player import Player
 from shuffle import Shuffle
 from stattistics import Statistics
-from replit import clear
 
 
 class Game:
@@ -26,22 +25,28 @@ class Game:
     def get_stats(self) -> Statistics:
         return self.stats
 
+    def round_init(self):
+        self.player.hit(0)
+        self.dealer.hit()
+        self.player.hit(0)
+        self.dealer.hit()
+
+        self.hand_displayer.display_card(self.dealer.name, self.dealer.get_first_card())
+        self.message_sender.send_message("----------------------------------------")
+
+    def round_start_messages(self):
+        self.message_sender.clear()
+        self.message_sender.send_message(f"There are {len(self.shuffle)} cards left in the deck")
+        self.message_sender.send_message(f"Game No: {self.rounds_passed + 1}")
+        self.message_sender.send_message(self.stats)
+        self.message_sender.send_message("========================================")
+
     def run(self):
         while self.continue_game == "y" or self.continue_game == "yes":
             if self.rounds_passed > 0:
-                clear()
-                self.message_sender.send_message(f"There are {len(self.shuffle)} cards left in the deck")
-                self.message_sender.send_message(f"Game No: {self.rounds_passed + 1}")
-                self.message_sender.send_message(self.stats)
-                self.message_sender.send_message("========================================")
+                self.round_start_messages()
 
-            self.player.hit(0)
-            self.dealer.hit()
-            self.player.hit(0)
-            self.dealer.hit()
-
-            self.hand_displayer.display_card(self.dealer.name, self.dealer.get_first_card())
-            self.message_sender.send_message("----------------------------------------")
+            self.round_init()
 
             if self.dealer.has_blackjack() and not self.player.has_blackjack(0):
                 user_value = self.player.get_value(0)
