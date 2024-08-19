@@ -1,6 +1,6 @@
 import art
 from game import Game
-from HandDisplayBase import ConsoleHandDisplay
+from hand_display import ConsoleHandDisplay
 from palyer_response_provider import ConsoleResponseProvider
 from shuffle import Shuffle
 

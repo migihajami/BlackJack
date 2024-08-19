@@ -1,4 +1,4 @@
-from HandDisplayBase import HandDisplay
+from hand_display import HandDisplay
 from hand import Hand
 from palyer_response_provider import PlayerResponseProvider
 from shuffle import Shuffle

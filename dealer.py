@@ -1,4 +1,4 @@
-from HandDisplayBase import HandDisplay
+from hand_display import HandDisplay
 from dealer_hand import DealerHand
 from player import Player
 from shuffle import Shuffle

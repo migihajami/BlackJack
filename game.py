@@ -1,4 +1,4 @@
-from HandDisplayBase import HandDisplay
+from hand_display import HandDisplay
 from dealer import Dealer
 from palyer_response_provider import PlayerResponseProvider
 from player import Player
