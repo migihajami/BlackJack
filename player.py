@@ -1,12 +1,12 @@
 from hand_display import HandDisplay
 from hand import Hand
-from palyer_response_provider import PlayerResponseProvider
+from response_provider import BaseResponseProvider
 from shuffle import Shuffle
 
 
 class Player:
 
-    def __init__(self, name: str, shuffle: Shuffle, hand_displayer: HandDisplay,  response_provider: PlayerResponseProvider, hands_amount: int = 1):
+    def __init__(self, name: str, shuffle: Shuffle, hand_displayer: HandDisplay, response_provider: BaseResponseProvider, hands_amount: int = 1):
         self.name = name
         self.shuffle = shuffle
         self.hands = []
