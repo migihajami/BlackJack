@@ -1,6 +1,5 @@
 from communicator import Communicator
-from dealer import Dealer
-from player import Player
+from player import Player, Dealer
 from shuffle import Shuffle
 from stattistics import Statistics
 
