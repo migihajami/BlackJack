@@ -1,5 +1,5 @@
 import random
-import card
+from card import Card
 
 
 class Shuffle:
@@ -26,10 +26,11 @@ class Shuffle:
     _suits = ["Hearts", "Clubs", "Diamonds", "Spades"]
 
     def __init__(self, dec_amount: int):
-        '''
+        """
         creates a shuffle machine
+
         :param dec_amount: number of decks of cards to load into the machine
-        '''
+        """
         self.sorted_deck = []
         self.deck = []
         self.dec_amount = dec_amount
@@ -39,7 +40,7 @@ class Shuffle:
         self.sorted_deck.clear()
         for _ in range(self.dec_amount):
             for suit in self._suits:
-                block = [card.Card(item, suit, value["Value"], value["Nick"]) for (item, value) in self._card_set.items()]
+                block = [Card(item, suit, value["Value"], value["Nick"]) for (item, value) in self._card_set.items()]
                 self.sorted_deck.extend(block)
 
     def stir(self):
