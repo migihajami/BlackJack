@@ -7,20 +7,20 @@ import time
 
 class Dealer(Player):
 
-    def __init__(self, shuffle: Shuffle, communication: Communicator, time_delay: float = 1.5):
-        super().__init__("Dealer", shuffle, communication, 1)
+    def __init__(self, shuffle: Shuffle, communicator: Communicator, time_delay: float = 1.5):
+        super().__init__("Dealer", shuffle, communicator, 1)
         self.hands = [DealerHand()]
         self.time_delay = time_delay
 
     def make_hand(self, hand_number: int = 0) -> int:
         hand = self.hands[0]
         value: int = hand.get_value()
-        self.communication.display_hand(self.name, hand)
+        self.communicator.display_hand(self.name, hand)
         while value < 17:
             time.sleep(self.time_delay)
             hand.add_card(self.shuffle.hit())
             value = hand.get_value()
-            self.communication.display_hand(self.name, hand)
+            self.communicator.display_hand(self.name, hand)
 
         return value
 

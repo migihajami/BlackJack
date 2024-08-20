@@ -25,14 +25,6 @@ class Hand:
 
         return result
 
-    def show_cards(self):
-        item: Card
-        result: list = []
-        for item in self.cards:
-            result.append(f"{item}")
-
-        return str.join("\n", result)
-
     def has_blackjack(self):
         return len(self.cards) == 2 and self.get_value() == 21
 

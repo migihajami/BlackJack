@@ -5,11 +5,11 @@ from shuffle import Shuffle
 
 class Player:
 
-    def __init__(self, name: str, shuffle: Shuffle, communication: Communicator, hands_amount: int = 1):
+    def __init__(self, name: str, shuffle: Shuffle, communicator: Communicator, hands_amount: int = 1):
         self.name = name
         self.shuffle = shuffle
         self.hands = []
-        self.communication = communication
+        self.communicator = communicator
         for i in range(hands_amount):
             self.hands.append(Hand())
 
@@ -40,15 +40,15 @@ class Player:
         need_more: bool = True
         value: int = hand.get_value()
 
-        self.communication.display_hand(self.name, self.hands[hand_number])
+        self.communicator.display_hand(self.name, self.hands[hand_number])
 
         while need_more and value < 21:
-            need_more_str = self.communication.get_response("Need more?")
+            need_more_str = self.communicator.get_response("Need more?")
             need_more = need_more_str.lower() == "y" or need_more_str.lower() == "yes"
             if need_more:
                 hand.cards.append(self.shuffle.hit())
                 value = hand.get_value()
-                self.communication.display_hand(self.name, self.hands[hand_number])
+                self.communicator.display_hand(self.name, self.hands[hand_number])
 
         return value
 
