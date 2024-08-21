@@ -35,3 +35,10 @@ class Hand:
         self.cards.clear()
 
 
+class DealerHand(Hand):
+
+    def __init__(self):
+        super().__init__()
+
+    def get_first_card(self):
+        return self.cards[0]

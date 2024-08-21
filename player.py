@@ -1,8 +1,7 @@
 import time
 
 from communicator import Communicator
-from dealer_hand import DealerHand
-from hand import Hand
+from hand import Hand, DealerHand
 from shuffle import Shuffle
 from abc import ABC, abstractmethod
 
