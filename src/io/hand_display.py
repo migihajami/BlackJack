@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
-from card import Card
-from hand import Hand
-from message_sender import MessageSender
+from src.black_jack.card import Card
+from src.black_jack.hand import Hand
+from src.io.message_sender import MessageSender
 
 
 class HandDisplay(ABC):

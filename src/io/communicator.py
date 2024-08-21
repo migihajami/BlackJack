@@ -1,8 +1,8 @@
-from card import Card
-from hand import Hand
-from hand_display import HandDisplay
-from response_provider import ResponseProvider
-from message_sender import MessageSender
+from src.black_jack.card import Card
+from src.black_jack.hand import Hand
+from src.io.hand_display import HandDisplay
+from src.io.response_provider import ResponseProvider
+from src.io.message_sender import MessageSender
 
 
 class Communicator(MessageSender, HandDisplay, ResponseProvider):

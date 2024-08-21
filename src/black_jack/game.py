@@ -1,7 +1,7 @@
-from communicator import Communicator
-from player import Player, Dealer
-from shuffle import Shuffle
-from stattistics import Statistics
+from src.io.communicator import Communicator
+from src.black_jack.player import Player, Dealer
+from src.black_jack.shuffle import Shuffle
+from src.stattistics import Statistics
 
 
 class Game:

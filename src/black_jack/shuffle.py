@@ -1,5 +1,5 @@
 import random
-from card import Card
+from src.black_jack.card import Card
 
 
 class Shuffle:

@@ -1,10 +1,10 @@
-import art
-from communicator import Communicator
-from game import Game
-from hand_display import ConsoleHandDisplay
-from message_sender import ConsoleMessageSender
-from response_provider import ConsoleResponseProvider
-from shuffle import Shuffle
+from src import art
+from src.io.communicator import Communicator
+from src.black_jack.game import Game
+from src.io.hand_display import ConsoleHandDisplay
+from src.io.message_sender import ConsoleMessageSender
+from src.io.response_provider import ConsoleResponseProvider
+from src.black_jack.shuffle import Shuffle
 
 message_sender = ConsoleMessageSender()
 hand_displayer = ConsoleHandDisplay(message_sender)

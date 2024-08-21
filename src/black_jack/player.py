@@ -1,8 +1,8 @@
 import time
 
-from communicator import Communicator
-from hand import Hand, DealerHand
-from shuffle import Shuffle
+from src.io.communicator import Communicator
+from src.black_jack.hand import Hand, DealerHand
+from src.black_jack.shuffle import Shuffle
 from abc import ABC, abstractmethod
 
 
