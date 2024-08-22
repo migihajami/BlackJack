@@ -2,8 +2,11 @@ from src.black_jack.card import Card
 
 
 class Hand:
-    def __init__(self):
+    def __init__(self, min_bet: int, max_bet: int):
         self.cards = []
+        self.bet = 0
+        self.min_bet = min_bet
+        self.max_bet = max_bet
 
     def get_value(self):
         result: int = 0
@@ -31,6 +34,13 @@ class Hand:
     def add_card(self, card: Card):
         self.cards.append(card)
 
+    def make_bet(self, amount: int) -> bool:
+        if amount < self.min_bet or amount > self.max_bet:
+            return False
+
+        self.bet = amount
+        return True
+
     def flush(self):
         self.cards.clear()
 
@@ -38,7 +48,7 @@ class Hand:
 class DealerHand(Hand):
 
     def __init__(self):
-        super().__init__()
+        super().__init__(0,0)
 
     def get_first_card(self):
         return self.cards[0]

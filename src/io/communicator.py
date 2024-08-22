@@ -30,4 +30,9 @@ class Communicator(MessageSender, HandDisplay, ResponseProvider):
     def get_response(self, question: str) -> str:
         return self.response_provider.get_response(question)
 
+    def get_bet_amount(self, question: str) -> int:
+        return self.response_provider.get_bet_amount(question)
+
+
+
 

@@ -11,7 +11,7 @@ class AbstractPlayer(ABC):
     def __init__(self, name: str, shuffle: Shuffle, communicator: Communicator):
         self.name = name
         self.shuffle = shuffle
-        self.hands = [Hand()]
+        self.hands = [Hand(5, 200)]
         self.communicator = communicator
 
     def hit(self, hand_number: int = 0):
@@ -37,11 +37,20 @@ class AbstractPlayer(ABC):
 
 class Player(AbstractPlayer):
 
-    def __init__(self, name: str, shuffle: Shuffle, communicator: Communicator):
+    def __init__(self, name: str, shuffle: Shuffle, communicator: Communicator, balance: int):
         super().__init__(name, shuffle, communicator)
+        self.balance = balance
 
     def __str__(self):
         return self.name
+
+    def make_bet(self, bet_amount: int) -> int:
+        if bet_amount > self.balance:
+            self.communicator.send_message("Not enough balance to make this bet")
+            return 0
+
+        self.balance -= bet_amount
+        return bet_amount
 
     def add_hand(self):
         self.hands.append(Hand())

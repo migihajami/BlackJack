@@ -1,3 +1,4 @@
+from src.black_jack.table import Table
 from src.io.communicator import Communicator
 from src.black_jack.player import Player, Dealer
 from src.black_jack.shuffle import Shuffle
@@ -7,15 +8,16 @@ from src.statistics import Statistics
 class Game:
     stats: Statistics
 
-    def __init__(self, player_name, shuffle: Shuffle, communicator: Communicator):
+    def __init__(self, player_name, shuffle: Shuffle, communicator: Communicator, table: Table):
         self.shuffle = shuffle
         self.rounds_passed = 0
         self.score = {"dealer": 0, "player": 0}
-        self.stats = Statistics()
         self.communicator = communicator
-        self.player = Player(player_name, self.shuffle, self.communicator)
+        self.player = Player(player_name, self.shuffle, self.communicator, 0)
+        self.stats = Statistics(self.player)
         self.dealer = Dealer(self.shuffle, self.communicator, 2)
-        self.continue_game = "y"
+        self.continue_game = True
+        self.table = table
 
     def get_stats(self) -> Statistics:
         return self.stats
@@ -36,8 +38,17 @@ class Game:
         self.communicator.send_message(self.stats)
         self.communicator.send_message("========================================")
 
+    def make_bet(self) -> int:
+        bet_amount = self.communicator.get_bet_amount("Please enter bet amount: ")
+        if bet_amount < self.table.min_bet or bet_amount > self.table.max_bet:
+            self.communicator.send_message(f"Min bet - {self.table.min_bet}, Max bet - {self.table.max_bet}")
+            return 0
+
+        return self.player.make_bet(bet_amount)
+
     def run(self):
-        while self.continue_game == "y" or self.continue_game == "yes":
+        bet_amount = self.make_bet()
+        while bet_amount > 0:
             if self.rounds_passed > 0:
                 self.round_start_messages()
 
@@ -62,6 +73,10 @@ class Game:
                 if dealer_value < user_value or dealer_value > 21:
                     self.communicator.send_message("You win!")
                     self.stats.win()
+                    if self.player.has_blackjack():
+                        self.player.balance += bet_amount + bet_amount * 1.5
+                    else:
+                        self.player.balance += bet_amount * 2
                 elif dealer_value == user_value:
                     self.communicator.send_message("Push.")
                     self.stats.push()
@@ -71,4 +86,4 @@ class Game:
 
             self.dealer.flush()
             self.player.flush()
-            self.continue_game = self.communicator.get_response("One more game? ")
+            bet_amount = self.make_bet()
