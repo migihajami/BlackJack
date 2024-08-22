@@ -74,9 +74,11 @@ class Game:
                     self.communicator.send_message("You win!")
                     self.stats.win()
                     if self.player.has_blackjack():
-                        self.player.balance += bet_amount + bet_amount * 1.5
+                        win_amount = bet_amount + bet_amount * 1.5
                     else:
-                        self.player.balance += bet_amount * 2
+                        win_amount = bet_amount * 2
+                    self.player.receive_win(win_amount)
+
                 elif dealer_value == user_value:
                     self.communicator.send_message("Push.")
                     self.stats.push()

@@ -52,6 +52,9 @@ class Player(AbstractPlayer):
         self.balance -= bet_amount
         return bet_amount
 
+    def receive_win(self, amount: float):
+        self.balance += amount
+
     def add_hand(self):
         self.hands.append(Hand())
 
