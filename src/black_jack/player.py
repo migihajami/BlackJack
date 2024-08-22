@@ -8,13 +8,11 @@ from abc import ABC, abstractmethod
 
 class AbstractPlayer(ABC):
 
-    def __init__(self, name: str, shuffle: Shuffle, communicator: Communicator, hands_amount: int = 1):
+    def __init__(self, name: str, shuffle: Shuffle, communicator: Communicator):
         self.name = name
         self.shuffle = shuffle
-        self.hands = []
+        self.hands = [Hand()]
         self.communicator = communicator
-        for i in range(hands_amount):
-            self.hands.append(Hand())
 
     def hit(self, hand_number: int = 0):
         hand = self.hands[hand_number]
@@ -39,8 +37,8 @@ class AbstractPlayer(ABC):
 
 class Player(AbstractPlayer):
 
-    def __init__(self, name: str, shuffle: Shuffle, communicator: Communicator, hands_amount: int = 1):
-        super().__init__(name, shuffle, communicator, hands_amount)
+    def __init__(self, name: str, shuffle: Shuffle, communicator: Communicator):
+        super().__init__(name, shuffle, communicator)
 
     def __str__(self):
         return self.name
@@ -73,7 +71,7 @@ class Player(AbstractPlayer):
 class Dealer(AbstractPlayer):
 
     def __init__(self, shuffle: Shuffle, communicator: Communicator, time_delay: float = 1.5):
-        super().__init__("Dealer", shuffle, communicator, 1)
+        super().__init__("Dealer", shuffle, communicator)
         self.hands = [DealerHand()]
         self.time_delay = time_delay
 

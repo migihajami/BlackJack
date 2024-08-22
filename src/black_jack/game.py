@@ -1,7 +1,7 @@
 from src.io.communicator import Communicator
 from src.black_jack.player import Player, Dealer
 from src.black_jack.shuffle import Shuffle
-from src.stattistics import Statistics
+from src.statistics import Statistics
 
 
 class Game:
@@ -13,7 +13,7 @@ class Game:
         self.score = {"dealer": 0, "player": 0}
         self.stats = Statistics()
         self.communicator = communicator
-        self.player = Player(player_name, self.shuffle, self.communicator, 1)
+        self.player = Player(player_name, self.shuffle, self.communicator)
         self.dealer = Dealer(self.shuffle, self.communicator, 2)
         self.continue_game = "y"
 
