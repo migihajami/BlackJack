@@ -17,7 +17,7 @@ message_sender.send_message(art.logo)
 message_sender.send_message("Welcome to the table! Black Jack 21. Dealer must hit on 16 and stop on 17.")
 name = response_provider.get_response("What is your name?")
 communicator = Communicator(message_sender, hand_displayer, response_provider)
-game = Game(name, shuffle, communicator, Table())
+game = Game(name, communicator, Table(shuffle, 5, 200))
 message_sender.send_message(game.stats)
 
 game.run()

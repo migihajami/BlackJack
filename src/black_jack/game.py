@@ -8,16 +8,15 @@ from src.statistics import Statistics
 class Game:
     stats: Statistics
 
-    def __init__(self, player_name, shuffle: Shuffle, communicator: Communicator, table: Table):
-        self.shuffle = shuffle
+    def __init__(self, player_name, communicator: Communicator, table: Table):
         self.rounds_passed = 0
         self.score = {"dealer": 0, "player": 0}
         self.communicator = communicator
-        self.player = Player(player_name, self.shuffle, self.communicator, 0)
-        self.stats = Statistics(self.player)
-        self.dealer = Dealer(self.shuffle, self.communicator, 2)
-        self.continue_game = True
         self.table = table
+        self.player = Player(player_name, self.table, self.communicator, 0)
+        self.stats = Statistics(self.player)
+        self.dealer = Dealer(self.table, self.communicator, 2)
+        self.continue_game = True
 
     def get_stats(self) -> Statistics:
         return self.stats
@@ -33,7 +32,7 @@ class Game:
 
     def round_start_messages(self):
         self.communicator.clear()
-        self.communicator.send_message(f"There are {len(self.shuffle)} cards left in the deck")
+        self.communicator.send_message(f"There are {len(self.table.shuffle)} cards left in the deck")
         self.communicator.send_message(f"Game No: {self.rounds_passed + 1}")
         self.communicator.send_message(self.stats)
         self.communicator.send_message("========================================")

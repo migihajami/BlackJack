@@ -31,8 +31,8 @@ class Shuffle:
 
         :param dec_amount: number of decks of cards to load into the machine
         """
-        self.sorted_deck = []
-        self.deck = []
+        self.sorted_deck = [Card]
+        self.deck = [Card]
         self.dec_amount = dec_amount
         self.stir()
 
@@ -49,7 +49,7 @@ class Shuffle:
         while len(self.sorted_deck) > 0:
             self.deck.append(self.sorted_deck.pop(random.randint(0, len(self.sorted_deck) - 1)))
 
-    def hit(self):
+    def hit(self) -> Card:
         if len(self.deck) < 10:
             self.stir()
 
