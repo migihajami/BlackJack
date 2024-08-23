@@ -1,7 +1,6 @@
 from src.black_jack.table import Table
 from src.io.communicator import Communicator
 from src.black_jack.player import Player, Dealer
-from src.black_jack.shuffle import Shuffle
 from src.statistics import Statistics
 
 
@@ -16,7 +15,6 @@ class Game:
         self.player = Player(player_name, self.table, self.communicator, 0)
         self.stats = Statistics(self.player)
         self.dealer = Dealer(self.table, self.communicator, 2)
-        self.continue_game = True
 
     def get_stats(self) -> Statistics:
         return self.stats
@@ -28,14 +26,12 @@ class Game:
         self.dealer.hit()
 
         self.communicator.display_card(self.dealer.name, self.dealer.get_first_card())
-        self.communicator.send_message("----------------------------------------")
 
     def round_start_messages(self):
         self.communicator.clear()
         self.communicator.send_message(f"There are {len(self.table.shuffle)} cards left in the deck")
         self.communicator.send_message(f"Game No: {self.rounds_passed + 1}")
         self.communicator.send_message(self.stats)
-        self.communicator.send_message("========================================")
 
     def make_bet(self) -> int:
         bet_amount = self.communicator.get_bet_amount("Please enter bet amount: ")
