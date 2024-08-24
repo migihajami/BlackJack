@@ -74,7 +74,7 @@ class Player(AbstractPlayer):
 
         self.communicator.display_hand(self.name, self.hands[hand_number])
 
-        while need_more and value < 21:
+        while need_more and value < 21 and not self.hands[hand_number].is_doubled:
             need_more_str = self.communicator.get_response("Need more?")
             need_more = need_more_str.lower() == "y" or need_more_str.lower() == "yes" or need_more_str.lower() == "d"
             if need_more:

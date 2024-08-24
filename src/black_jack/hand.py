@@ -7,6 +7,7 @@ class Hand:
         self.bet = 0
         self.min_bet = min_bet
         self.max_bet = max_bet
+        self.is_doubled = False
 
     def get_value(self):
         result: int = 0
@@ -43,9 +44,11 @@ class Hand:
 
     def double(self):
         self.bet *= 2
+        self.is_doubled = True
 
     def flush(self):
         self.cards.clear()
+        self.is_doubled = False
 
 
 class DealerHand(Hand):
