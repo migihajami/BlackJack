@@ -19,5 +19,5 @@ class ConsoleResponseProvider(ResponseProvider):
         return response
 
     def get_bet_amount(self, question: str) -> int:
-        response = input(question)
+        response = float(input(question))
         return int(response)

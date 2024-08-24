@@ -16,9 +16,6 @@ class Game:
         self.stats = Statistics(self.player)
         self.dealer = Dealer(self.table, self.communicator, 2)
 
-    def get_stats(self) -> Statistics:
-        return self.stats
-
     def round_init(self):
         self.player.hit(0)
         self.dealer.hit()
@@ -31,18 +28,18 @@ class Game:
         self.communicator.clear()
         self.communicator.send_message(f"There are {len(self.table.shuffle)} cards left in the deck")
         self.communicator.send_message(f"Game No: {self.rounds_passed + 1}")
-        self.communicator.send_message(self.stats)
 
-    def make_bet(self) -> int:
+    def make_bet(self, hand_number: int) -> int:
         bet_amount = self.communicator.get_bet_amount("Please enter bet amount: ")
         if bet_amount < self.table.min_bet or bet_amount > self.table.max_bet:
             self.communicator.send_message(f"Min bet - {self.table.min_bet}, Max bet - {self.table.max_bet}")
             return 0
 
-        return self.player.make_bet(bet_amount)
+        return self.player.make_bet(bet_amount, hand_number)
 
     def run(self):
-        bet_amount = self.make_bet()
+        bet_amount = self.make_bet(0)
+        self.communicator.send_message(self.stats)
         while bet_amount > 0:
             if self.rounds_passed > 0:
                 self.round_start_messages()
@@ -54,10 +51,12 @@ class Game:
                 self.communicator.display_hand(self.player.name, self.player.hands[0])
             else:
                 user_value = self.player.make_hand(0)
+                bet_amount = self.player.hands[0].bet
 
             self.rounds_passed += 1
             if user_value > 21:
                 self.communicator.send_message("Bust!")
+                self.stats.loose()
             else:
                 if not self.player.has_blackjack(0):
                     dealer_value = self.dealer.make_hand()
@@ -67,15 +66,16 @@ class Game:
 
                 if dealer_value < user_value or dealer_value > 21:
                     self.communicator.send_message("You win!")
-                    self.stats.win()
                     if self.player.has_blackjack():
                         win_amount = bet_amount + bet_amount * 1.5
                     else:
                         win_amount = bet_amount * 2
                     self.player.receive_win(win_amount)
+                    self.stats.win()
 
                 elif dealer_value == user_value:
                     self.communicator.send_message("Push.")
+                    self.player.receive_win(bet_amount)
                     self.stats.push()
                 else:
                     self.communicator.send_message("You loose.")
@@ -83,4 +83,5 @@ class Game:
 
             self.dealer.flush()
             self.player.flush()
-            bet_amount = self.make_bet()
+            self.communicator.send_message(self.stats)
+            bet_amount = self.make_bet(0)

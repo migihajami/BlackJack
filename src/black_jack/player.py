@@ -44,13 +44,18 @@ class Player(AbstractPlayer):
     def __str__(self):
         return self.name
 
-    def make_bet(self, bet_amount: int) -> int:
+    def make_bet(self, bet_amount: int, hand_number: int) -> int:
         if bet_amount > self.balance:
             self.communicator.send_message("Not enough balance to make this bet")
             return 0
 
         self.balance -= bet_amount
+        self.hands[hand_number].make_bet(bet_amount)
         return bet_amount
+
+    def double(self, hand_number: int):
+        self.make_bet(self.hands[hand_number].bet, hand_number)
+        self.hands[hand_number].double()
 
     def receive_win(self, amount: float):
         self.balance += amount
@@ -64,15 +69,17 @@ class Player(AbstractPlayer):
 
     def make_hand(self, hand_number: int = 0) -> int:
         hand = self.hands[hand_number]
-        need_more: bool = True
-        value: int = hand.get_value()
+        need_more = True
+        value = hand.get_value()
 
         self.communicator.display_hand(self.name, self.hands[hand_number])
 
         while need_more and value < 21:
             need_more_str = self.communicator.get_response("Need more?")
-            need_more = need_more_str.lower() == "y" or need_more_str.lower() == "yes"
+            need_more = need_more_str.lower() == "y" or need_more_str.lower() == "yes" or need_more_str.lower() == "d"
             if need_more:
+                if need_more_str.lower() == "d":
+                    self.double(hand_number)
                 hand.cards.append(self.table.hit())
                 value = hand.get_value()
                 self.communicator.display_hand(self.name, self.hands[hand_number])

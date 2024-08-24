@@ -41,6 +41,9 @@ class Hand:
         self.bet = amount
         return True
 
+    def double(self):
+        self.bet *= 2
+
     def flush(self):
         self.cards.clear()
 
