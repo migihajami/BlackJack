@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import List
+from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
-
+import json
 from src.io.bj_logging import log_execution
 
 
@@ -33,9 +34,11 @@ class IDataStorage(ABC):
 
 class MemoryStorage(IDataStorage):
     entities = {}
+    FILENAME = "MemoryStorageDump.json"
 
     def __init__(self, field_id: str):
         super().__init__(field_id)
+        self._load_state()
 
     @log_execution
     def insert(self, entity_name: str, entity: BaseModel) -> str:
@@ -46,6 +49,7 @@ class MemoryStorage(IDataStorage):
             raise KeyError(f"id '{entity_id}' already exists")
 
         self.entities[entity_name][entity_id] = entity
+        self._save_state()
         return entity_id
 
     @log_execution
@@ -56,6 +60,7 @@ class MemoryStorage(IDataStorage):
             raise KeyError(f"No such entity - {entity_name}.{entity_id}")
 
         self.entities[entity_name][entity_id] = entity
+        self._save_state()
         return True
 
     @log_execution
@@ -72,7 +77,23 @@ class MemoryStorage(IDataStorage):
     def delete(self, entity_name: str, entity_id: str):
         self._check_entity(entity_name)
         del self.entities[entity_name][entity_id]
+        self._save_state()
 
     def _check_entity(self, entity_name: str):
         if entity_name not in self.entities.keys():
             self.entities[entity_name] = {}
+
+    def _save_state(self):
+        with open(self.FILENAME, "w") as file:
+            data = json.dumps(self.entities, default=jsonable_encoder)
+            file.write(data)
+
+    def _load_state(self):
+        try:
+            file = open(self.FILENAME, "r")
+        except OSError:
+            return
+
+        with file:
+            data = file.read()
+            self.entities = json.loads(data)
