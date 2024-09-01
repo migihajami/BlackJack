@@ -1,3 +1,5 @@
+import uuid
+
 from src.black_jack.table import Table
 from src.io.communicator import Communicator
 from src.black_jack.player import Player, Dealer
@@ -15,6 +17,10 @@ class Game:
         self.player = Player(player_name, self.table, self.communicator, 0)
         self.stats = Statistics(self.player)
         self.dealer = Dealer(self.table, self.communicator, 2)
+        self.game_id = uuid.uuid4()
+
+    def __str__(self):
+        return self.game_id.hex
 
     def round_init(self):
         self.player.hit(0)
