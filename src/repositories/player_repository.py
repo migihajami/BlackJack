@@ -5,24 +5,37 @@ from src.repositories.abstract_repository import IAbstractRepository
 
 
 class PlayerRepository(IAbstractRepository):
-    ENTITY_NAME = "player"
+    _ENTITY_NAME = "player"
 
     def __init__(self,  storage: IDataStorage):
         super().__init__(storage)
 
     def insert(self, data):
         data.player_id = uuid.uuid4().hex
-        return self.storage.insert(self.ENTITY_NAME, data)
+        return self.storage.insert(self._ENTITY_NAME, data)
 
     def get(self, item_id: str) -> PlayerModel:
-        return self.storage.get(self.ENTITY_NAME, item_id)
+        return self.storage.get(self._ENTITY_NAME, item_id)
 
     def get_all(self, item_filter):
-        return self.storage.get_all(self.ENTITY_NAME)
+        return self.storage.get_all(self._ENTITY_NAME)
 
     def update(self, data):
-        return self.storage.update(self.ENTITY_NAME, data)
+        return self.storage.update(self._ENTITY_NAME, data)
 
     def delete(self, item_id: str):
-        return self.storage.delete(self.ENTITY_NAME, item_id)
+        return self.storage.delete(self._ENTITY_NAME, item_id)
 
+    def topup_balance(self, player_id: str, amount: float):
+        player = self.storage.get(self._ENTITY_NAME, player_id)
+        player.balance += amount
+        self.storage.update(self._ENTITY_NAME, player)
+
+    def withdraw_bet(self, player_id: str, amount: float):
+        player = self.storage.get(self._ENTITY_NAME, player_id)
+        if player.amount < amount:
+            return False
+
+        player.balance -= amount
+        self.storage.update(self._ENTITY_NAME, player)
+        return True
