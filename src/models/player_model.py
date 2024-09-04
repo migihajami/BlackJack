@@ -8,7 +8,9 @@ class PlayerModel(BaseModel):
     wins: int
     looses: int
     pushes: int
-    surrenders: int
 
     def __str__(self):
         return self.name
+
+
+

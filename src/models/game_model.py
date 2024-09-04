@@ -9,6 +9,6 @@ class GameModel(BaseModel):
     player_hand: PlayerHandModel
     dealer_hand: DealerHandModel
     state: str
-
+    current_bet_amount: float
 
 

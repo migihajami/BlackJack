@@ -49,3 +49,4 @@ class GameRepository(IAbstractRepository):
         game.dealer_hand.add_card(card)
         self.update(game)
 
+

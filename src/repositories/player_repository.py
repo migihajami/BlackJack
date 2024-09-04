@@ -39,3 +39,26 @@ class PlayerRepository(IAbstractRepository):
         player.balance -= amount
         self.storage.update(self._ENTITY_NAME, player)
         return True
+
+    def win(self, player_id: str, amount: float):
+        player = self.storage.get(self._ENTITY_NAME, player_id)
+        player.wins += 1
+        player.balance += amount
+        self.storage.update(self._ENTITY_NAME, player)
+
+    def push(self, player_id: str, returned_amount: float):
+        player = self.storage.get(self._ENTITY_NAME, player_id)
+        player.pushes += 1
+        player.balance += returned_amount
+        self.storage.update(self._ENTITY_NAME, player)
+
+    def loose(self, player_id: str):
+        player = self.storage.get(self._ENTITY_NAME, player_id)
+        player.looses += 1
+        self.storage.update(self._ENTITY_NAME, player)
+
+    def surrender(self, player_id: str, returned_amount: float):
+        player = self.storage.get(self._ENTITY_NAME, player_id)
+        player.looses += 1
+        player.balance += returned_amount
+        self.storage.update(self._ENTITY_NAME, player)
