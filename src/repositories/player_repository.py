@@ -31,9 +31,9 @@ class PlayerRepository(IAbstractRepository):
         player.balance += amount
         self.storage.update(self._ENTITY_NAME, player)
 
-    def withdraw_bet(self, player_id: str, amount: float):
+    def withdraw_coins(self, player_id: str, amount: float):
         player = self.storage.get(self._ENTITY_NAME, player_id)
-        if player.amount < amount:
+        if player.balance < amount:
             return False
 
         player.balance -= amount

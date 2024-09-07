@@ -4,9 +4,10 @@ from pydantic import BaseModel
 
 from src.io.data_storage import IDataStorage
 from src.models.card_model import CardModel
-from src.models.game_model import GameModel
+from src.models.game_model import GameModel, GameStateEnum
 from src.models.hand_model import DealerHandModel, PlayerHandModel
 from src.repositories.abstract_repository import IAbstractRepository
+from src.services.shuffle_service import ShuffleService
 
 
 class GameRepository(IAbstractRepository):
@@ -32,11 +33,15 @@ class GameRepository(IAbstractRepository):
         return self.storage.delete(self._ENTITY_NAME, item_id)
 
     def create(self, player_id: str):
+        shuffle = ShuffleService(6)
+
         game = GameModel(game_id=uuid.uuid4().hex,
                          player_id=player_id,
-                         player_hand=PlayerHandModel(bet_amount=0, cards=[]),
-                         dealer_hand=DealerHandModel(cards=[]),
-                         state="init")
+                         player_hand=PlayerHandModel(bet_amount=0, cards=[], history=[], is_doubled=False),
+                         dealer_hand=DealerHandModel(cards=[], history=[], is_hand_made=False),
+                         state=GameStateEnum.WAITING_FOR_BET,
+                         current_bet_amount=0,
+                         deck=shuffle.deck)
         return self.storage.insert(self._ENTITY_NAME, game)
 
     def add_player_card(self, game_id: str, card: CardModel):

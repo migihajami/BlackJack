@@ -1,12 +1,13 @@
 import logging
 
 from fastapi import FastAPI
-from src.api import player
+from src.api import player, game
 import uvicorn
 
 logging.basicConfig(level=logging.DEBUG)
 app = FastAPI()
 app.include_router(player.router)
+app.include_router(game.router)
 
 
 @app.get("/tables/open/{option}")

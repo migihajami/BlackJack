@@ -6,7 +6,7 @@ from src.models.card_model import CardModel
 
 class HandModel(ABC, BaseModel):
     cards: List[CardModel]
-    history: [str]
+    history: List[str]
 
     def add_card(self, card: CardModel):
         self.cards.append(card)
@@ -50,9 +50,27 @@ class PlayerHandModel(HandModel):
         super().flush()
         self.is_doubled = False
 
+    def make_bet(self, bet_amount: float):
+        self.bet_amount = bet_amount
+
 
 class DealerHandModel(HandModel):
+    is_hand_made: bool
 
     def get_first_card(self):
         return self.cards[0]
 
+    def make_hand(self, hit):
+        self.is_hand_made = True
+        while self.get_value() < 17:
+            self.add_card(hit())
+
+    def get_value(self):
+        if self.is_hand_made:
+            return super().get_value()
+        else:
+            return self.cards[0].value
+
+    def flush(self):
+        self.is_hand_made = False
+        super().flush()

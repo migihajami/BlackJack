@@ -5,7 +5,7 @@ from src.models.player_model import PlayerModel
 from src.repositories.player_repository import PlayerRepository
 
 router = APIRouter(prefix="/players", tags=["players"], responses={404: {"description": "Not found"}})
-storage = MemoryStorage("player_id")
+storage = MemoryStorage[PlayerModel]("player_id")
 repo = PlayerRepository(storage)
 
 
