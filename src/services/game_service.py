@@ -1,4 +1,5 @@
-from src.models.game_round_model import GameRoundModel
+from src.models.game_model import GameStateEnum
+from src.models.game_round_model import GameRoundModel, RoundResultEnum
 from src.repositories.game_repository import GameRepository
 from src.repositories.player_repository import PlayerRepository
 
@@ -13,8 +14,7 @@ class GameService:
     def __game_model__(self):
         return self.game_repo.get(self.game_id)
 
-    @property
-    def game_round_model(self):
+    def game_round_model(self, round_result: RoundResultEnum):
         game_model = self.game_repo.get(self.game_id)
         round_model = GameRoundModel(
             round_state=game_model.state,
@@ -22,7 +22,8 @@ class GameService:
             dealer_value=game_model.dealer_hand.get_value(),
             player_cards=game_model.player_hand.cards,
             player_value=game_model.player_hand.get_value(),
-            bet_amount=game_model.player_hand.bet_amount
+            bet_amount=game_model.player_hand.bet_amount,
+            round_result=round_result
         )
         return round_model
 
@@ -34,6 +35,7 @@ class GameService:
         game_model = self.__game_model__()
         card = game_model.hit()
         game_model.player_hand.add_card(card)
+        game_model.state = GameStateEnum.WAITING_PLAYER
         self.game_repo.update(game_model)
         return self.game_round_model
 
@@ -42,13 +44,21 @@ class GameService:
         if self.player_repo.withdraw_coins(game_model.player_id, game_model.current_bet_amount):
             game_model.current_bet_amount *= 2
             game_model.player_hand.double()
+            game_model.state = GameStateEnum.WAITING_DEALER
+            self.game_repo.update(game_model)
+        else:
+            raise ValueError("Not enough coins")
 
     def player_pass(self):
+        game_model = self.__game_model__()
+        game_model.state = GameStateEnum.WAITING_DEALER
+        self.game_repo.update(game_model)
         return self.__dealer_make_hand()
 
     def __dealer_make_hand(self):
         game_model = self.__game_model__()
         game_model.dealer_hand.make_hand(game_model.hit)
+        game_model.state = GameStateEnum.ROUND_FINISHED
         self.game_repo.update(game_model)
         return self.game_round_model
 
@@ -65,7 +75,7 @@ class GameService:
 
         game_model.player_hand.make_bet(bet_amount)
         game_model.init_game()
-        game_model.state = "bet_is_made"
+        game_model.state = GameStateEnum.WAITING_PLAYER
         self.game_repo.update(game_model)
         return self.game_round_model
 
@@ -76,6 +86,7 @@ class GameService:
             pass
 
         game_model.finish_game()
+        game_model.state = GameStateEnum.WAITING_FOR_BET
         self.game_repo.update(game_model)
         return game_model
 

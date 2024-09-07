@@ -12,7 +12,8 @@ class GameStateEnum(Enum):
     INITIALIZING = 2,
     WAITING_PLAYER = 3,
     WAITING_DEALER = 4,
-    WAITING_FOR_BET = 5
+    WAITING_FOR_BET = 5,
+    ROUND_FINISHED = 6
 
 
 class GameModel(BaseModel):
