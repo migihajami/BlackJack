@@ -49,54 +49,50 @@ class MemoryStorage(IDataStorage, Generic[T]):
         super().__init__(field_id)
         self._load_state()
 
-    def __get_entity_dict(self, entity_name: str) -> Dict[str, T]:
+    @property
+    def __get_entity_dict(self) -> Dict[str, T]:
         entity_dict: Dict[str, T]
-        match entity_name:
-            case 'game':
+        match self.field_id:
+            case 'game_id':
                 entity_dict = self.entities.game
-            case 'player':
+            case 'player_id':
                 entity_dict = self.entities.player
             case _:
-                raise KeyError(f"Entity '{entity_name} is not defined")
+                raise KeyError(f"Id of entity '{self.field_id} is not defined")
         return entity_dict
 
     @log_execution
     def insert(self, entity_name: str, entity: T) -> str:
         entity_id = getattr(entity, self.field_id)
-        entity_dict = self.__get_entity_dict(entity_name)
 
-        if entity_id in entity_dict.keys():
+        if entity_id in self.__get_entity_dict.keys():
             raise KeyError(f"id '{entity_id}' already exists")
 
-        entity_dict[entity_id] = entity
+        self.__get_entity_dict[entity_id] = entity
         self._save_state()
         return entity_id
 
     @log_execution
     def update(self, entity_name: str, entity: T) -> bool:
         entity_id = getattr(entity, self.field_id)
-        entity_dict = self.__get_entity_dict(entity_name)
-        if entity_id not in entity_dict:
+        if entity_id not in self.__get_entity_dict:
             raise KeyError(f"No such entity - {entity_name}.{entity_id}")
 
-        entity_dict[entity_id] = entity
+        self.__get_entity_dict[entity_id] = entity
         self._save_state()
         return True
 
     @log_execution
     def get_all(self, entity_name: str) -> List[T]:
-        entity_dict = self.__get_entity_dict(entity_name)
-        return [entity_dict[entity] for entity in entity_dict]
+        return [self.__get_entity_dict[entity] for entity in self.__get_entity_dict]
 
     @log_execution
     def get(self, entity_name: str, entity_id: str) -> T:
-        entity_dict = self.__get_entity_dict(entity_name)
-        return entity_dict[entity_id]
+        return self.__get_entity_dict[entity_id]
 
     @log_execution
     def delete(self, entity_name: str, entity_id: str):
-        entity_dict = self.__get_entity_dict(entity_name)
-        del entity_dict[entity_id]
+        del self.__get_entity_dict[entity_id]
         self._save_state()
 
     def _save_state(self):
