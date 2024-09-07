@@ -1,7 +1,4 @@
 import uuid
-
-from pydantic import BaseModel
-
 from src.io.data_storage import IDataStorage
 from src.models.card_model import CardModel
 from src.models.game_model import GameModel, GameStateEnum
@@ -53,5 +50,3 @@ class GameRepository(IAbstractRepository):
         game = self.get(game_id)
         game.dealer_hand.add_card(card)
         self.update(game)
-
-
