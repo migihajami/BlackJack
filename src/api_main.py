@@ -42,7 +42,7 @@ game:
     remove hand
     surrender
     give tips
-    make a sidebet
+    make a side bet
     
 
 append wallet
@@ -57,4 +57,3 @@ bonuses:
     retrieve invite friend bonus
     
 '''
-
