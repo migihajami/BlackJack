@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 from src.io.data_storage import MemoryStorage
 from src.models.game_model import GameModel
+from src.models.game_round_model import GameRoundModel
 from src.models.player_model import PlayerModel
 from src.repositories.game_repository import GameRepository
 from src.repositories.player_repository import PlayerRepository
@@ -13,7 +14,7 @@ game_repo = GameRepository(MemoryStorage[GameModel]("game_id"))
 
 
 @router.post("/start/{player_id}")
-def start(player_id: str) -> str:
+def start(player_id: str) -> GameRoundModel:
     game_id = game_repo.create(player_id)
     game_service = GameService(game_id, game_repo, player_repo)
     return game_service.start_game()
@@ -27,7 +28,6 @@ def finish(game_id: str):
 
 @router.post("/bet/{game_id}/{bet_amount}")
 def make_bet(game_id: str, bet_amount: int):
-    game = game_repo.get(game_id)
     game_service = GameService(game_id, game_repo, player_repo)
     try:
         game_service.make_bet(bet_amount)
@@ -39,7 +39,8 @@ def make_bet(game_id: str, bet_amount: int):
 
 @router.post("/double/{game_id}")
 def double(game_id: str):
-    pass
+    game_service = GameService(game_id, game_repo, player_repo)
+    game_service.player_double()
 
 
 @router.get("/{game_id}")
