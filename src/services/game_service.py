@@ -1,5 +1,6 @@
 from src.models.game_model import GameStateEnum
 from src.models.game_round_model import GameRoundModel, RoundResultEnum
+from src.models.hand_model import PlayerHandModel, DealerHandModel
 from src.repositories.game_repository import GameRepository
 from src.repositories.player_repository import PlayerRepository
 
@@ -14,7 +15,8 @@ class GameService:
     def __game_model__(self):
         return self.game_repo.get(self.game_id)
 
-    def game_round_model(self, round_result: RoundResultEnum):
+    @property
+    def game_round_model(self):
         game_model = self.game_repo.get(self.game_id)
         round_model = GameRoundModel(
             round_state=game_model.state,
@@ -23,7 +25,7 @@ class GameService:
             player_cards=game_model.player_hand.cards,
             player_value=game_model.player_hand.get_value(),
             bet_amount=game_model.player_hand.bet_amount,
-            round_result=round_result
+            round_result=self.get_round_result(game_model.player_hand, game_model.dealer_hand)
         )
         return round_model
 
@@ -31,12 +33,34 @@ class GameService:
         game_model = self.__game_model__()
         return game_model
 
+    @staticmethod
+    def get_round_result(player_hand: PlayerHandModel, dealer_hand: DealerHandModel) -> RoundResultEnum:
+        round_result = RoundResultEnum.NOT_FINISHED
+        player_value = player_hand.get_value()
+        dealer_value = dealer_hand.get_value()
+
+        if dealer_hand.has_blackjack() and not player_hand.has_blackjack():
+            round_result = RoundResultEnum.DEALER_WIN
+        elif player_hand.has_blackjack() and not dealer_hand.has_blackjack():
+            round_result = RoundResultEnum.PLAYER_WIN
+        if player_value > 21:
+            round_result = RoundResultEnum.DEALER_WIN
+        elif dealer_value < 17:
+            round_result = RoundResultEnum.NOT_FINISHED
+        elif player_value == 21 and dealer_value != 21:
+            round_result = RoundResultEnum.PLAYER_WIN
+        elif player_value == dealer_value:
+            round_result = RoundResultEnum.PUSH
+
+        return round_result
+
     def player_hit(self):
         game_model = self.__game_model__()
         card = game_model.hit()
         game_model.player_hand.add_card(card)
         game_model.state = GameStateEnum.WAITING_PLAYER
         self.game_repo.update(game_model)
+
         return self.game_round_model
 
     def player_double(self):
