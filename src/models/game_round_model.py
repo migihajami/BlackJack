@@ -6,10 +6,10 @@ from src.models.game_model import GameStateEnum
 
 
 class RoundResultEnum(Enum):
-    NOT_FINISHED = 1,
-    PLAYER_WIN = 2,
-    DEALER_WIN = 3,
-    PUSH = 4,
+    NOT_FINISHED = 1
+    PLAYER_WIN = 2
+    DEALER_WIN = 3
+    PUSH = 4
 
 
 class GameRoundModel(BaseModel):
