@@ -43,7 +43,7 @@ class MemoryStorageEntities(BaseModel):
 
 class MemoryStorage(IDataStorage, Generic[T]):
     entities = MemoryStorageEntities(player={}, game={})
-    FILENAME = "MemoryStorageDump.json"
+    FILENAME = "src/MemoryStorageDump.json"
 
     def __init__(self, field_id: str):
         super().__init__(field_id)
