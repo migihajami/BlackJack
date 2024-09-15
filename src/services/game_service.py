@@ -59,8 +59,11 @@ class GameService:
         card = game_model.hit()
         game_model.player_hand.add_card(card)
         game_model.state = GameStateEnum.WAITING_PLAYER
+        if game_model.player_hand.get_value() == 21:
+            game_model.state = GameStateEnum.WAITING_DEALER
+        elif game_model.player_hand.get_value() > 21:
+            game_model.state = GameStateEnum.ROUND_FINISHED
         self.game_repo.update(game_model)
-
         return self.game_round_model
 
     def player_double(self):
