@@ -1,4 +1,6 @@
 import uuid
+from typing import List
+
 from src.io.data_storage import IDataStorage
 from src.models.card_model import CardModel
 from src.models.game_model import GameModel, GameStateEnum
@@ -10,7 +12,7 @@ from src.services.shuffle_service import ShuffleService
 class GameRepository(IAbstractRepository):
     _ENTITY_NAME = "game"
 
-    def __init__(self,  storage: IDataStorage):
+    def __init__(self,  storage: IDataStorage[GameModel]):
         super().__init__(storage)
 
     def insert(self, data):
@@ -22,6 +24,10 @@ class GameRepository(IAbstractRepository):
 
     def get_all(self, item_filter):
         return self.storage.get_all(self._ENTITY_NAME)
+
+    def get_player_games(self, player_id: str) -> List[str]:
+        games = self.storage.get_all(self._ENTITY_NAME)
+        return [game.game_id for game in games if game.player_id == player_id]
 
     def update(self, data):
         return self.storage.update(self._ENTITY_NAME, data)
